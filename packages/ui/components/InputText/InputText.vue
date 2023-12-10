@@ -7,7 +7,43 @@
     :data-state="state"
   >
     <div class="wrapper">
+      <select
+        v-if="type === 'select'"
+        :id="id"
+        class="native"
+        :name="name"
+        :disabled="disabled"
+        :value="modelValue"
+        :data-state="modelValue"
+        @change="onUpdate"
+      >
+        <option disabled hidden selected value="">{{ placeholder }}</option>
+        <option v-for="option in options" :key="option" :value="option">
+          {{ option }}
+        </option>
+      </select>
+
       <input
+        v-else-if="type === 'maska'"
+        v-maska
+        :id="id"
+        :data-maska-tokens="maskaTokens"
+        data-maska-eager
+        :data-maska="maska"
+        class="native"
+        :placeholder="translatedPlaceholder"
+        :type="type"
+        :name="name"
+        :autocomplete="autocomplete"
+        :inputmode="inputmode"
+        :value="modelValue"
+        :disabled="disabled"
+        :data-state="modelValue"
+        @input="onUpdate"
+      />
+
+      <input
+        v-else
         :id="id"
         class="native"
         :placeholder="translatedPlaceholder"
@@ -17,6 +53,7 @@
         :inputmode="inputmode"
         :value="modelValue"
         :disabled="disabled"
+        :data-state="modelValue"
         @input="onUpdate"
       />
     </div>
@@ -39,6 +76,7 @@ import { useI18n } from '@tok/i18n';
 import { SvgIcon } from '@tok/ui/components/SvgIcon';
 import { useFocused } from '@tok/ui/use/focused';
 import { getElementId } from '@tok/ui/utility/getElementId';
+import { vMaska } from 'maska';
 import { computed, ref, toRefs, watch } from 'vue';
 
 import {
@@ -145,6 +183,10 @@ defineExpose({
   }
 
   &::placeholder {
+    color: var(--tok-text-color-64);
+  }
+
+  &:not([data-state]) {
     color: var(--tok-text-color-64);
   }
 }

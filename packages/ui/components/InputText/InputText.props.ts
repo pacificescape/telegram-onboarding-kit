@@ -6,7 +6,10 @@ export type InputTextProps<T = string | null> = {
   autocomplete?: string;
   name?: string;
   disabled?: boolean;
+  maska?: string | string[];
+  maskaTokens?: string;
   invalid?: boolean;
+  options?: string[];
   inputmode?:
     | 'text'
     | 'search'
